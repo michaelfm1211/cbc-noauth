@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+body {
+	margin: 40px;
+	max-width: 650px;
+	font-size: 18px;
+	overflow-x: auto;
+}
+	</style>
+</head>
+<body>
+	<h3>Goal</h3>
+	<p>
+	This website provides two forms: one to generate an authentication
+	token that allows to login as a user, and another to login with your
+	authentication token.
+	</p>
+	<p>
+	The authentication token is a JSON object of the form shown below
+	encrypted with AES-256 in CBC mode.
+	</p>
+	<pre><code>{"time_created": 1726551159755, "user_name": "guest"}</code></pre>
+	<p>
+	Padding is added to the beginning of the token. The initialization
+	vector and encrypted token is shown as a hex string.
+	</p>
+	<p>
+	Your goal is to generate an encrypted authentication token, then modify
+	the data so that when it is decrypted by the login form you are the
+	"admin" user.
+	</p>
+
+	<h3>Generate authentication token</h3>
+	<form action="/genAuthToken" method="POST">
+		Click below to generate an authenticate token for the "guest"
+		user:
+		<br>
+		<input type="submit" value="Generate authentication token">
+	</form>
+	{% if auth_token %}
+		Initialization vector: <pre><code>{{iv}}</code></pre>
+		Encrypted token: <pre><code>{{auth_token}}</code></pre>
+	{% endif %}
+
+	<h3>Login</h3>
+	<form action="/login" method="POST">
+		<label for="iv">Initialization vector:</label>
+		<input id="iv" type="text" name="iv">
+		<br>
+		<label for="token">Authentication token:</label>
+		<input id="token" type="text" name="token">
+		<input type="submit" value="Login">
+	</form>
+	{% if token %}
+		token: <pre><code>{{token}}</code></pre>
+	{% endif %}
+	{% if is_admin %}
+		<h1>You Win!!</h1>
+	{% endif %}
+</body>
+</html>
