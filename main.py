@@ -37,7 +37,7 @@ def login():
     token = padded_token[pad_len:]
 
     try:
-        token_dict = json.loads(token)
+        token_dict = json.loads(token.decode('iso-8859-1'), strict=False)
         is_admin = token_dict["user_name"] == "admin"
     except Exception:
         is_admin = False
