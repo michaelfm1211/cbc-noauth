@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-from time import time
+from datetime import datetime
 import json
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ def index():
 
 @app.route("/genAuthToken", methods=["POST"])
 def genAuthToken():
-    token = {"time_created": int(time()), "user_name": "guest"}
+    token = {"time_created": str(datetime.now()), "user_name": "guest"}
     token_bytes = json.dumps(token).encode()
     len_pad = 16 - len(token_bytes) % 16
     token_bytes = bytes([len_pad]) + b"\0" * (len_pad-1) + token_bytes
